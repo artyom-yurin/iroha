@@ -85,6 +85,10 @@ message SignatoriesResponse {
   repeated string keys = 1;
 }
 
+message SettingValueResponse {
+  string value = 1;
+}
+
 message TransactionsResponse {
   repeated Transaction transactions = 1;
 }
@@ -110,6 +114,7 @@ message QueryResponse {
     RolePermissionsResponse role_permissions_response = 9;
     TransactionsPageResponse transactions_page_response = 11;
     BlockResponse block_response = 12;
+    SettingValueResponse setting_value_response = 13;
   }
   string query_hash = 10;
 }
