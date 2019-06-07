@@ -36,6 +36,7 @@
 #include "interfaces/queries/get_transactions.hpp"
 #include "interfaces/queries/query.hpp"
 #include "interfaces/queries/tx_pagination_meta.hpp"
+#include "interfaces/queries/get_setting_value.hpp"
 #include "interfaces/transaction.hpp"
 #include "logger/logger.hpp"
 #include "logger/logger_manager.hpp"
@@ -1169,6 +1170,17 @@ namespace iroha {
                      [](auto &tx) { return clone(*tx); });
       return query_response_factory_->createTransactionsResponse(
           std::move(response_txs), query_hash_);
+    }
+
+    QueryExecutorResult PostgresQueryExecutorVisitor::operator()(
+        const shared_model::interface::GetSettingValue &q) {
+
+      //TODO artyom-yurin 06.06.2019 Create a query GetSettingValue response
+      return query_response_factory_->createErrorQueryResponse(
+        shared_model::interface::QueryResponseFactory::ErrorQueryType::kNotSupported,
+        "No settings yet",
+        0
+        ,query_hash_);
     }
 
     template <typename ReturnValueType>

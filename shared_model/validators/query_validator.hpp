@@ -21,6 +21,7 @@
 #include "backend/protobuf/queries/proto_get_signatories.hpp"
 #include "backend/protobuf/queries/proto_get_transactions.hpp"
 #include "backend/protobuf/queries/proto_query.hpp"
+#include "backend/protobuf/queries/proto_get_setting_value.hpp"
 #include "interfaces/queries/tx_pagination_meta.hpp"
 #include "validators/abstract_validator.hpp"
 #include "validators/answer.hpp"
@@ -168,6 +169,14 @@ namespace shared_model {
           const interface::GetPendingTransactions &qry) const {
         ReasonsGroupType reason;
         reason.first = "GetPendingTransactions";
+
+        return reason;
+      }
+
+      ReasonsGroupType operator()(
+          const interface::GetSettingValue &qry) const {
+        ReasonsGroupType reason;
+        reason.first = "GetSettingValue";
 
         return reason;
       }

@@ -17,6 +17,7 @@
 #include "interfaces/queries/get_roles.hpp"
 #include "interfaces/queries/get_signatories.hpp"
 #include "interfaces/queries/get_transactions.hpp"
+#include "interfaces/queries/get_setting_value.hpp"
 #include "interfaces/queries/query_payload_meta.hpp"
 #include "utils/visitor_apply_for_all.hpp"
 

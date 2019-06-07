@@ -89,6 +89,9 @@ message QueryPayloadMeta {
   uint64 query_counter = 3;
 }
 
+message GetSettingValue {
+  string key = 1;
+}
 
 message Query {
   message Payload {
@@ -106,6 +109,7 @@ message Query {
        GetAssetInfo get_asset_info = 12;
        GetPendingTransactions get_pending_transactions = 13;
        GetBlock get_block = 14;
+       GetSettingValue get_setting_value = 15;
      }
   }
 

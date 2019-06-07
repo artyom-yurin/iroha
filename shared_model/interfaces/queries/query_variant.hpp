@@ -22,7 +22,8 @@ namespace boost {
             const shared_model::interface::GetRoles &,
             const shared_model::interface::GetRolePermissions &,
             const shared_model::interface::GetAssetInfo &,
-            const shared_model::interface::GetPendingTransactions &>;
+            const shared_model::interface::GetPendingTransactions &,
+            const shared_model::interface::GetSettingValue &>;
 }  // namespace boost
 
 #endif  // IROHA_SHARED_MODEL_QUERY_VARIANT_HPP
