@@ -21,6 +21,7 @@
 #include "interfaces/commands/set_quorum.hpp"
 #include "interfaces/commands/subtract_asset_quantity.hpp"
 #include "interfaces/commands/transfer_asset.hpp"
+#include "interfaces/commands/set_setting_value.hpp"
 #include "utils/visitor_apply_for_all.hpp"
 
 using Variant = shared_model::interface::Command::CommandVariantType;

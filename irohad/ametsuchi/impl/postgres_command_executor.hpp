@@ -80,6 +80,9 @@ namespace iroha {
       CommandResult operator()(
           const shared_model::interface::TransferAsset &command) override;
 
+      CommandResult operator()(
+          const shared_model::interface::SetSettingValue &command) override;
+
       static void prepareStatements(soci::session &sql);
 
      private:
