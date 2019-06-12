@@ -344,6 +344,7 @@ namespace iroha {
     boost::optional<std::shared_ptr<QueryExecutor>>
     StorageImpl::createQueryExecutor(
         std::shared_ptr<PendingTransactionStorage> pending_txs_storage,
+        std::shared_ptr<SettingStorage> settings_storage,
         std::shared_ptr<shared_model::interface::QueryResponseFactory>
             response_factory) const {
       std::shared_lock<std::shared_timed_mutex> lock(drop_mutex_);
@@ -357,6 +358,7 @@ namespace iroha {
               std::make_unique<soci::session>(*connection_),
               *block_store_,
               std::move(pending_txs_storage),
+              std::move(settings_storage),
               converter_,
               std::move(response_factory),
               perm_converter_,

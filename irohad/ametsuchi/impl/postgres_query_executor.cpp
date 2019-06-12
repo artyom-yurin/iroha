@@ -276,6 +276,7 @@ namespace iroha {
         std::unique_ptr<soci::session> sql,
         KeyValueStorage &block_store,
         std::shared_ptr<PendingTransactionStorage> pending_txs_storage,
+        std::shared_ptr<SettingStorage> settings_storage,
         std::shared_ptr<shared_model::interface::BlockJsonConverter> converter,
         std::shared_ptr<shared_model::interface::QueryResponseFactory>
             response_factory,
@@ -285,9 +286,11 @@ namespace iroha {
         : sql_(std::move(sql)),
           block_store_(block_store),
           pending_txs_storage_(std::move(pending_txs_storage)),
+          settings_storage_(std::move(settings_storage)),
           visitor_(*sql_,
                    block_store_,
                    pending_txs_storage_,
+                   settings_storage_,
                    std::move(converter),
                    response_factory,
                    perm_converter,
@@ -350,6 +353,7 @@ namespace iroha {
         soci::session &sql,
         KeyValueStorage &block_store,
         std::shared_ptr<PendingTransactionStorage> pending_txs_storage,
+        std::shared_ptr<SettingStorage> setting_storage,
         std::shared_ptr<shared_model::interface::BlockJsonConverter> converter,
         std::shared_ptr<shared_model::interface::QueryResponseFactory>
             response_factory,

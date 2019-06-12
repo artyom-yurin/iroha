@@ -46,11 +46,12 @@ class QueryProcessorTest : public ::testing::Test {
         storage,
         storage,
         nullptr,
+        nullptr,
         query_response_factory,
         getTestLogger("QueryProcessor"));
     EXPECT_CALL(*storage, getBlockQuery())
         .WillRepeatedly(Return(block_queries));
-    EXPECT_CALL(*storage, createQueryExecutor(_, _))
+    EXPECT_CALL(*storage, createQueryExecutor(_, _,_))
         .WillRepeatedly(Return(
             boost::make_optional(std::shared_ptr<QueryExecutor>(qry_exec))));
   }

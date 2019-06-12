@@ -54,6 +54,7 @@ target_link_libraries(application
     mst_processor
     torii_service
     pending_txs_storage
+    settings_storage
     common
     )
 

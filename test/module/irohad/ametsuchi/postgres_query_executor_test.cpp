@@ -38,6 +38,7 @@
 #include "module/irohad/ametsuchi/ametsuchi_fixture.hpp"
 #include "module/irohad/common/validators_config.hpp"
 #include "module/irohad/pending_txs_storage/pending_txs_storage_mock.hpp"
+#include "module/irohad/settings_storage/settings_storage_mock.hpp"
 #include "module/shared_model/builders/protobuf/test_block_builder.hpp"
 #include "module/shared_model/builders/protobuf/test_query_builder.hpp"
 #include "module/shared_model/builders/protobuf/test_transaction_builder.hpp"
@@ -179,6 +180,7 @@ namespace iroha {
 
       auto executeQuery(shared_model::interface::Query &query) {
         return query_executor->createQueryExecutor(pending_txs_storage,
+                                                   settings_storage,
                                                    query_response_factory)
             | [&query](const auto &executor) {
                 return executor->validateAndExecute(query, false);
@@ -260,6 +262,7 @@ namespace iroha {
       std::shared_ptr<QueryExecutorFactory> query_executor;
       std::unique_ptr<CommandExecutor> executor;
       std::shared_ptr<MockPendingTransactionStorage> pending_txs_storage;
+      std::shared_ptr<MockSettingStorage> settings_storage;
 
       std::unique_ptr<KeyValueStorage> block_store;
 
@@ -287,6 +290,7 @@ namespace iroha {
       auto blocks_query =
           TestBlocksQueryBuilder().creatorAccountId(account_id).build();
       ASSERT_TRUE(query_executor->createQueryExecutor(pending_txs_storage,
+                                                      settings_storage,
                                                       query_response_factory)
                   | [&blocks_query](const auto &executor) {
                       return executor->validate(blocks_query, false);
@@ -302,6 +306,7 @@ namespace iroha {
       auto blocks_query =
           TestBlocksQueryBuilder().creatorAccountId(account_id).build();
       ASSERT_FALSE(query_executor->createQueryExecutor(pending_txs_storage,
+                                                       settings_storage,
                                                        query_response_factory)
                    | [&blocks_query](const auto &executor) {
                        return executor->validate(blocks_query, false);

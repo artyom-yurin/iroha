@@ -22,12 +22,14 @@ namespace iroha {
         std::shared_ptr<ametsuchi::Storage> storage,
         std::shared_ptr<ametsuchi::QueryExecutorFactory> qry_exec,
         std::shared_ptr<iroha::PendingTransactionStorage> pending_transactions,
+        std::shared_ptr<iroha::SettingStorage> settings,
         std::shared_ptr<shared_model::interface::QueryResponseFactory>
             response_factory,
         logger::LoggerPtr log)
         : storage_{std::move(storage)},
           qry_exec_{std::move(qry_exec)},
           pending_transactions_{std::move(pending_transactions)},
+          settings_{std::move(settings)},
           response_factory_{std::move(response_factory)},
           log_{std::move(log)} {
       storage_->on_commit().subscribe(
@@ -36,12 +38,13 @@ namespace iroha {
                 response_factory_->createBlockQueryResponse(block);
             blocks_query_subject_.get_subscriber().on_next(
                 std::move(block_response));
-          });
+        });
     }
 
     std::unique_ptr<shared_model::interface::QueryResponse>
     QueryProcessorImpl::queryHandle(const shared_model::interface::Query &qry) {
       auto executor = qry_exec_->createQueryExecutor(pending_transactions_,
+                                                     settings_,
                                                      response_factory_);
       if (not executor) {
         log_->error("Cannot create query executor");
@@ -56,6 +59,7 @@ namespace iroha {
     QueryProcessorImpl::blocksQueryHandle(
         const shared_model::interface::BlocksQuery &qry) {
       auto exec = qry_exec_->createQueryExecutor(pending_transactions_,
+                                                 settings_,
                                                  response_factory_);
       if (not exec or not(exec | [&qry](const auto &executor) {
             return executor->validate(qry, true);

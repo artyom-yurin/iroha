@@ -12,6 +12,7 @@
 #include "module/irohad/ametsuchi/mock_wsv_query.hpp"
 #include "module/irohad/network/network_mocks.hpp"
 #include "module/irohad/pending_txs_storage/pending_txs_storage_mock.hpp"
+#include "module/irohad/settings_storage/settings_storage_mock.hpp"
 #include "module/irohad/torii/torii_mocks.hpp"
 #include "module/irohad/validation/validation_mocks.hpp"
 
@@ -65,6 +66,8 @@ class ToriiQueriesTest : public testing::Test {
     storage = std::make_shared<MockStorage>();
     pending_txs_storage =
         std::make_shared<iroha::MockPendingTransactionStorage>();
+    settings_storage =
+        std::make_shared<iroha::MockSettingStorage>();
     query_response_factory =
         std::make_shared<shared_model::proto::ProtoQueryResponseFactory>();
 
@@ -72,7 +75,7 @@ class ToriiQueriesTest : public testing::Test {
 
     EXPECT_CALL(*storage, getWsvQuery()).WillRepeatedly(Return(wsv_query));
     EXPECT_CALL(*storage, getBlockQuery()).WillRepeatedly(Return(block_query));
-    EXPECT_CALL(*storage, createQueryExecutor(_, _))
+    EXPECT_CALL(*storage, createQueryExecutor(_, _, _))
         .WillRepeatedly(Return(boost::make_optional(
             std::shared_ptr<QueryExecutor>(query_executor))));
 
@@ -80,6 +83,7 @@ class ToriiQueriesTest : public testing::Test {
         storage,
         storage,
         pending_txs_storage,
+        settings_storage,
         query_response_factory,
         getTestLogger("QueryProcessor"));
 
@@ -137,6 +141,7 @@ class ToriiQueriesTest : public testing::Test {
   std::shared_ptr<MockQueryExecutor> query_executor;
   std::shared_ptr<MockStorage> storage;
   std::shared_ptr<iroha::MockPendingTransactionStorage> pending_txs_storage;
+  std::shared_ptr<iroha::MockSettingStorage> settings_storage;
   std::shared_ptr<shared_model::interface::QueryResponseFactory>
       query_response_factory;
   std::shared_ptr<QueryService::QueryFactoryType> query_factory;

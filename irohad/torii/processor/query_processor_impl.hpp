@@ -24,6 +24,8 @@ namespace iroha {
           std::shared_ptr<ametsuchi::QueryExecutorFactory> qry_exec,
           std::shared_ptr<iroha::PendingTransactionStorage>
               pending_transactions,
+          std::shared_ptr<iroha::SettingStorage>
+              settings,
           std::shared_ptr<shared_model::interface::QueryResponseFactory>
               response_factory,
           logger::LoggerPtr log);
@@ -43,6 +45,7 @@ namespace iroha {
       std::shared_ptr<ametsuchi::Storage> storage_;
       std::shared_ptr<ametsuchi::QueryExecutorFactory> qry_exec_;
       std::shared_ptr<iroha::PendingTransactionStorage> pending_transactions_;
+      std::shared_ptr<iroha::SettingStorage> settings_;
       std::shared_ptr<shared_model::interface::QueryResponseFactory>
           response_factory_;
 

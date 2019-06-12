@@ -20,6 +20,7 @@
 
 namespace iroha {
   class PendingTransactionStorage;
+  class SettingStorage;
   class MstProcessor;
   namespace ametsuchi {
     class WsvRestorer;
@@ -186,6 +187,8 @@ class Irohad {
 
   virtual RunResult initPendingTxsStorage();
 
+  virtual RunResult initSettingsStorage();
+
   virtual RunResult initTransactionCommandService();
 
   virtual RunResult initQueryService();
@@ -320,6 +323,9 @@ class Irohad {
 
   // pending transactions storage
   std::shared_ptr<iroha::PendingTransactionStorage> pending_txs_storage_;
+
+  // pending transactions storage
+  std::shared_ptr<iroha::SettingStorage> settings_storage_;
 
   // transaction service
   std::shared_ptr<iroha::torii::CommandService> command_service;

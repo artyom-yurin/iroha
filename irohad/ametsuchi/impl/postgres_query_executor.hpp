@@ -53,6 +53,7 @@ namespace iroha {
           soci::session &sql,
           KeyValueStorage &block_store,
           std::shared_ptr<PendingTransactionStorage> pending_txs_storage,
+          std::shared_ptr<SettingStorage> settings_storage,
           std::shared_ptr<shared_model::interface::BlockJsonConverter>
               converter,
           std::shared_ptr<shared_model::interface::QueryResponseFactory>
@@ -233,6 +234,7 @@ namespace iroha {
       shared_model::interface::types::AccountIdType creator_id_;
       shared_model::interface::types::HashType query_hash_;
       std::shared_ptr<PendingTransactionStorage> pending_txs_storage_;
+      std::shared_ptr<SettingStorage> settings_storage_;
       std::shared_ptr<shared_model::interface::BlockJsonConverter> converter_;
       std::shared_ptr<shared_model::interface::QueryResponseFactory>
           query_response_factory_;
@@ -247,6 +249,7 @@ namespace iroha {
           std::unique_ptr<soci::session> sql,
           KeyValueStorage &block_store,
           std::shared_ptr<PendingTransactionStorage> pending_txs_storage,
+          std::shared_ptr<SettingStorage> settings_storage,
           std::shared_ptr<shared_model::interface::BlockJsonConverter>
               converter,
           std::shared_ptr<shared_model::interface::QueryResponseFactory>
@@ -269,6 +272,7 @@ namespace iroha {
       std::unique_ptr<soci::session> sql_;
       KeyValueStorage &block_store_;
       std::shared_ptr<PendingTransactionStorage> pending_txs_storage_;
+      std::shared_ptr<SettingStorage> settings_storage_;
       PostgresQueryExecutorVisitor visitor_;
       std::shared_ptr<shared_model::interface::QueryResponseFactory>
           query_response_factory_;

@@ -40,6 +40,7 @@
 #include "ordering/impl/on_demand_common.hpp"
 #include "ordering/impl/on_demand_ordering_gate.hpp"
 #include "pending_txs_storage/impl/pending_txs_storage_impl.hpp"
+#include "settings_storage/impl/settings_storage_impl.hpp"
 #include "simulator/impl/simulator.hpp"
 #include "synchronizer/impl/synchronizer_impl.hpp"
 #include "torii/impl/command_service_impl.hpp"
@@ -161,6 +162,7 @@ Irohad::RunResult Irohad::init() {
   | [this]{ return initStatusBus();}
   | [this]{ return initMstProcessor();}
   | [this]{ return initPendingTxsStorage();}
+  | [this]{ return initSettingsStorage();}
 
   // Torii
   | [this]{ return initTransactionCommandService();}
@@ -660,6 +662,12 @@ Irohad::RunResult Irohad::initPendingTxsStorage() {
   return {};
 }
 
+Irohad::RunResult Irohad::initSettingsStorage() {
+  settings_storage_ = std::make_shared<SettingStorageImpl>();
+  log_->info("[Init] => settings storage");
+  return {};
+}
+
 /**
  * Initializing transaction command service
  */
@@ -710,6 +718,7 @@ Irohad::RunResult Irohad::initQueryService() {
       storage,
       storage,
       pending_txs_storage_,
+      settings_storage_,
       query_response_factory_,
       query_service_log_manager->getChild("Processor")->getLogger());
 
