@@ -1179,7 +1179,7 @@ namespace iroha {
     QueryExecutorResult PostgresQueryExecutorVisitor::operator()(
         const shared_model::interface::GetSettingValue &q) {
       boost::optional<
-        shared_model::interface::types::SettingValueType> response = {}; // TODO artyom-yurin 12.06.2019 Get value from storage
+        shared_model::interface::types::SettingValueType> response = settings_storage_->getSettingValue(q.key());
       if (response)
       {
         return query_response_factory_->createSettingValueResponse(
