@@ -1174,13 +1174,23 @@ namespace iroha {
 
     QueryExecutorResult PostgresQueryExecutorVisitor::operator()(
         const shared_model::interface::GetSettingValue &q) {
-
-      //TODO artyom-yurin 06.06.2019 Create a query GetSettingValue response
-      return query_response_factory_->createErrorQueryResponse(
+      boost::optional<
+        shared_model::interface::types::SettingValueType> response = {}; // TODO artyom-yurin 12.06.2019 Get value from storage
+      if (response)
+      {
+        return query_response_factory_->createSettingValueResponse(
+        response.get(),
+        query_hash_);
+      }
+      else
+      {
+        // TODO artyom-yurin 12.06.2019 Create new type of error or choose another way of throwing errors
+        return query_response_factory_->createErrorQueryResponse(
         shared_model::interface::QueryResponseFactory::ErrorQueryType::kNotSupported,
-        "No settings yet",
+        "No such setting",
         0
         ,query_hash_);
+      }
     }
 
     template <typename ReturnValueType>

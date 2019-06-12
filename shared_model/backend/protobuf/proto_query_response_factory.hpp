@@ -72,6 +72,10 @@ namespace shared_model {
           interface::types::PrecisionType precision,
           const crypto::Hash &query_hash) const override;
 
+      std::unique_ptr<interface::QueryResponse> createSettingValueResponse(
+          interface::types::SettingValueType setting_value,
+          const crypto::Hash &query_hash) const override;
+
       std::unique_ptr<interface::QueryResponse> createRolesResponse(
           std::vector<interface::types::RoleIdType> roles,
           const crypto::Hash &query_hash) const override;

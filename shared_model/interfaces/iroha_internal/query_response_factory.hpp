@@ -84,6 +84,16 @@ namespace shared_model {
           const crypto::Hash &query_hash) const = 0;
 
       /**
+       * Create response for setting value query
+       * @param setting_value to be inserted into the response
+       * @param query_hash - hash of the query, for which response is created
+       * @return setting value resposne
+       */
+      virtual std::unique_ptr<QueryResponse> createSettingValueResponse(
+          types::SettingValueType setting_value,
+          const crypto::Hash &query_hash) const = 0;
+
+      /**
        * Create response for get block query
        * @param block to be inserted into the response
        * @param query_hash - hash of the query, for which response is created

@@ -294,6 +294,20 @@ shared_model::proto::ProtoQueryResponseFactory::createAssetResponse(
 }
 
 std::unique_ptr<shared_model::interface::QueryResponse>
+shared_model::proto::ProtoQueryResponseFactory::createSettingValueResponse(
+    const interface::types::SettingValueType setting_value,
+    const crypto::Hash &query_hash) const {
+  return createQueryResponse(
+      [setting_value = std::move(setting_value)]
+      (iroha::protocol::QueryResponse &protocol_query_response) {
+        iroha::protocol::SettingValueResponse *protocol_specific_response =
+            protocol_query_response.mutable_setting_value_response();
+        protocol_specific_response->set_value(std::move(setting_value));
+      },
+      query_hash);
+}
+
+std::unique_ptr<shared_model::interface::QueryResponse>
 shared_model::proto::ProtoQueryResponseFactory::createRolesResponse(
     std::vector<shared_model::interface::types::RoleIdType> roles,
     const crypto::Hash &query_hash) const {
