@@ -507,6 +507,7 @@ TRUNCATE TABLE tx_status_by_hash RESTART IDENTITY CASCADE;
 TRUNCATE TABLE height_by_account_set RESTART IDENTITY CASCADE;
 TRUNCATE TABLE index_by_creator_height RESTART IDENTITY CASCADE;
 TRUNCATE TABLE position_by_account_asset RESTART IDENTITY CASCADE;
+TRUNCATE TABLE setting RESTART IDENTITY CASCADE;
 )";
 
     const std::string &StorageImpl::reset_peers_ = R"(

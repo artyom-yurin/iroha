@@ -297,4 +297,9 @@ CREATE TABLE IF NOT EXISTS position_by_account_asset (
     height bigint,
     index bigint
 );
+CREATE TABLE IF NOT EXISTS setting(
+    setting_key text,
+    setting_value text,
+    PRIMARY KEY (setting_key)
+);
 )";
