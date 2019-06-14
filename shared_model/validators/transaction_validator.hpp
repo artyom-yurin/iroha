@@ -26,6 +26,7 @@
 #include "interfaces/commands/set_quorum.hpp"
 #include "interfaces/commands/subtract_asset_quantity.hpp"
 #include "interfaces/commands/transfer_asset.hpp"
+#include "interfaces/commands/set_setting_value.hpp"
 #include "interfaces/transaction.hpp"
 #include "validators/abstract_validator.hpp"
 #include "validators/answer.hpp"
@@ -223,6 +224,16 @@ namespace shared_model {
         validator_.validateAssetId(reason, ta.assetId());
         validator_.validateAmount(reason, ta.amount());
         validator_.validateDescription(reason, ta.description());
+
+        return reason;
+      }
+
+      ReasonsGroupType operator()(const interface::SetSettingValue &ssv) const {
+        ReasonsGroupType reason;
+        addInvalidCommand(reason, "SetSettingValue");
+
+        reason.second.emplace_back(
+              "The command can only be called from genesis");
 
         return reason;
       }

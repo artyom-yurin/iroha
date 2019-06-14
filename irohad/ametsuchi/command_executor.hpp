@@ -28,6 +28,7 @@ namespace shared_model {
     class SetQuorum;
     class SubtractAssetQuantity;
     class TransferAsset;
+    class SetSettingValue;
   }  // namespace interface
 }  // namespace shared_model
 
@@ -115,6 +116,9 @@ namespace iroha {
 
       virtual CommandResult operator()(
           const shared_model::interface::TransferAsset &command) = 0;
+
+      virtual CommandResult operator()(
+          const shared_model::interface::SetSettingValue &command) = 0;
     };
   }  // namespace ametsuchi
 }  // namespace iroha
