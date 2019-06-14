@@ -26,6 +26,7 @@
 #include "interfaces/commands/set_quorum.hpp"
 #include "interfaces/commands/subtract_asset_quantity.hpp"
 #include "interfaces/commands/transfer_asset.hpp"
+#include "interfaces/commands/set_setting_value.hpp"
 #include "interfaces/common_objects/types.hpp"
 #include "interfaces/permission_to_string.hpp"
 #include "utils/string_builder.hpp"
@@ -783,6 +784,8 @@ namespace iroha {
               ELSE 1
           END AS result)";
 
+    const std::string PostgresCommandExecutor::setSettingValueBase = ""; //TODO artyom-yurin 14.06.2019 Add SQL statement
+
     std::string CommandError::toString() const {
       return (boost::format("%s: %d with extra info '%s'") % command_name
               % error_code % error_extra)
@@ -1195,6 +1198,26 @@ namespace iroha {
 
       return executeQuery(
           sql_, cmd.str(), "TransferAsset", std::move(str_args));
+    }
+
+    CommandResult PostgresCommandExecutor::operator()(
+        const shared_model::interface::SetSettingValue &command) {
+      auto key = command.key();
+      auto value = command.value();
+      auto cmd = boost::format("EXECUTE %1% ('%2%', '%3%')");
+
+      appendCommandName("setSettingValue", cmd, do_validation_);
+
+      cmd = (cmd % key % value);
+
+      auto str_args = [&key, &value] {
+        return getQueryArgsStringBuilder()
+            .append("setting_key", key)
+            .append("setting_value", value)
+            .finalize();
+      };
+
+      return {};//executeQuery(sql_, cmd.str(), "SetSettingValue", std::move(str_args));
     }
 
     void PostgresCommandExecutor::prepareStatements(soci::session &sql) {
