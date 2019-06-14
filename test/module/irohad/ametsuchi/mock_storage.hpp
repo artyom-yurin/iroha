@@ -20,6 +20,7 @@ namespace iroha {
      public:
       MOCK_CONST_METHOD0(getWsvQuery, std::shared_ptr<WsvQuery>(void));
       MOCK_CONST_METHOD0(getBlockQuery, std::shared_ptr<BlockQuery>(void));
+      MOCK_CONST_METHOD0(getSettingQuery, std::shared_ptr<SettingQuery>(void));
       MOCK_METHOD0(
           createTemporaryWsv,
           expected::Result<std::unique_ptr<TemporaryWsv>, std::string>(void));
@@ -30,6 +31,8 @@ namespace iroha {
                          boost::optional<std::shared_ptr<PeerQuery>>());
       MOCK_CONST_METHOD0(createBlockQuery,
                          boost::optional<std::shared_ptr<BlockQuery>>());
+      MOCK_CONST_METHOD0(createSettingQuery,
+                         boost::optional<std::shared_ptr<SettingQuery>>());
       MOCK_CONST_METHOD2(
           createQueryExecutor,
           boost::optional<std::shared_ptr<QueryExecutor>>(

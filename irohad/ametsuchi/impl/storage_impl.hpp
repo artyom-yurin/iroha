@@ -68,6 +68,9 @@ namespace iroha {
       boost::optional<std::shared_ptr<BlockQuery>> createBlockQuery()
           const override;
 
+      boost::optional<std::shared_ptr<SettingQuery>> createSettingQuery()
+          const override;
+
       boost::optional<std::shared_ptr<QueryExecutor>> createQueryExecutor(
           std::shared_ptr<PendingTransactionStorage> pending_txs_storage,
           std::shared_ptr<shared_model::interface::QueryResponseFactory>
@@ -101,6 +104,8 @@ namespace iroha {
       std::shared_ptr<WsvQuery> getWsvQuery() const override;
 
       std::shared_ptr<BlockQuery> getBlockQuery() const override;
+
+      std::shared_ptr<SettingQuery> getSettingQuery() const override;
 
       rxcpp::observable<std::shared_ptr<const shared_model::interface::Block>>
       on_commit() override;
