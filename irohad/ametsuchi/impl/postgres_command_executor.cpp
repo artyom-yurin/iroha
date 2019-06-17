@@ -784,7 +784,23 @@ namespace iroha {
               ELSE 1
           END AS result)";
 
-    const std::string PostgresCommandExecutor::setSettingValueBase = ""; //TODO artyom-yurin 14.06.2019 Add SQL statement
+    const std::string PostgresCommandExecutor::setSettingValueBase = R"(
+          PREPARE %s (text, text) AS
+          WITH
+          updated AS (
+              INSERT INTO setting(setting_key, setting_value)
+              VALUES
+                (
+                    $1,
+                    $2
+                )
+              ON CONFLICT (setting_key)
+              DO UPDATE SET setting_value = EXCLUDED.setting_value
+              RETURNING (1)
+            )
+          SELECT CASE WHEN EXISTS (SELECT * FROM updated) THEN 0
+              ELSE 1
+          END AS result)";
 
     std::string CommandError::toString() const {
       return (boost::format("%s: %d with extra info '%s'") % command_name
@@ -1205,7 +1221,6 @@ namespace iroha {
       auto key = command.key();
       auto value = command.value();
       auto cmd = boost::format("EXECUTE %1% ('%2%', '%3%')");
-
       appendCommandName("setSettingValue", cmd, do_validation_);
 
       cmd = (cmd % key % value);
@@ -1217,7 +1232,7 @@ namespace iroha {
             .finalize();
       };
 
-      return {};//executeQuery(sql_, cmd.str(), "SetSettingValue", std::move(str_args));
+      return executeQuery(sql_, cmd.str(), "SetSettingValue", std::move(str_args));
     }
 
     void PostgresCommandExecutor::prepareStatements(soci::session &sql) {
@@ -1557,6 +1572,11 @@ namespace iroha {
             R"( AND (SELECT * FROM has_perm))",
             R"( AND (SELECT * FROM has_perm))",
             R"( WHEN NOT (SELECT * FROM has_perm) THEN 2 )"}});
+
+      statements.push_back(
+          {"setSettingValue",
+           setSettingValueBase,
+           {}});
 
       for (const auto &st : statements) {
         prepareStatement(sql, st);
