@@ -17,6 +17,7 @@ namespace shared_model {
      */
     struct ValidatorsConfig {
       ValidatorsConfig(uint64_t max_batch_size,
+                       size_t max_description_size = 64,
                        bool partial_ordered_batches_are_valid = false);
       /// Maximum allowed amount of transactions within a batch
       const uint64_t max_batch_size;
@@ -24,6 +25,8 @@ namespace shared_model {
       /// Batch meta can contain more hashes of batch transactions than it
       /// actually has. Used for block validation
       const bool partial_ordered_batches_are_valid;
+
+      const size_t max_description_size;
     };
 
     /**

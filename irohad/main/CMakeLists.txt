@@ -28,6 +28,7 @@ add_library(application
     impl/on_demand_ordering_init.cpp
     impl/consensus_init.cpp
     impl/block_loader_init.cpp
+    settings.cpp
     )
 target_link_libraries(application
     PRIVATE

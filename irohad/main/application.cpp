@@ -28,6 +28,7 @@
 #include "logger/logger_manager.hpp"
 #include "main/impl/consensus_init.hpp"
 #include "main/server_runner.hpp"
+#include "main/settings.hpp"
 #include "multi_sig_transactions/gossip_propagation_strategy.hpp"
 #include "multi_sig_transactions/mst_processor_impl.hpp"
 #include "multi_sig_transactions/mst_propagation_strategy_stub.hpp"
@@ -113,12 +114,12 @@ Irohad::Irohad(const std::string &block_store_dir,
       log_manager_(std::move(logger_manager)),
       log_(log_manager_->getLogger()) {
   log_->info("created");
-  validators_config_ =
+  setting_validators_config_ =
       std::make_shared<shared_model::validation::ValidatorsConfig>(
-          max_proposal_size_);
+          max_proposal_size_, 64);
   block_validators_config_ =
       std::make_shared<shared_model::validation::ValidatorsConfig>(
-          max_proposal_size_, true);
+          max_proposal_size_, 64, true);
   // Initializing storage at this point in order to insert genesis block before
   // initialization of iroha daemon
   initStorage();
@@ -140,6 +141,9 @@ Irohad::RunResult Irohad::init() {
       return {};
     }
   };
+  Settings settings(storage->getSettingQuery());
+  validators_config_ =
+      std::make_shared<shared_model::validation::ValidatorsConfig>(max_proposal_size_, settings.getMaxDescriptionSize());
   // clang-format off
   return initWsvRestorer() // Recover WSV from the existing ledger
                            // to be sure it is consistent
@@ -181,7 +185,7 @@ void Irohad::dropStorage() {
 Irohad::RunResult Irohad::initStorage() {
   common_objects_factory_ =
       std::make_shared<shared_model::proto::ProtoCommonObjectsFactory<
-          shared_model::validation::FieldValidator>>(validators_config_);
+          shared_model::validation::FieldValidator>>(setting_validators_config_);
   auto perm_converter =
       std::make_shared<shared_model::proto::ProtoPermissionToString>();
   auto block_converter =

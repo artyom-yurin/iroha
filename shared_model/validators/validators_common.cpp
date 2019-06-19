@@ -11,8 +11,10 @@ namespace shared_model {
   namespace validation {
 
     ValidatorsConfig::ValidatorsConfig(uint64_t max_batch_size,
+                                       size_t max_description_size,
                                        bool partial_ordered_batches_are_valid)
         : max_batch_size(max_batch_size),
+          max_description_size(max_description_size),
           partial_ordered_batches_are_valid(partial_ordered_batches_are_valid) {
     }
 

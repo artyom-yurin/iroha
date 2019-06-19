@@ -22,7 +22,7 @@ namespace shared_model {
       // TODO igor-egorov 05.06.2018 IR-438 (Re)Move TransactionSequence classes
       const uint64_t kTestsMaxBatchSize(10000);
       const auto kValidatorsConfig =
-          std::make_shared<validation::ValidatorsConfig>(kTestsMaxBatchSize);
+          std::make_shared<validation::ValidatorsConfig>(kTestsMaxBatchSize, 64);
     }  // namespace
     auto batch_validator =
         std::make_shared<validation::BatchValidator>(kValidatorsConfig);

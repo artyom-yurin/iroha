@@ -213,7 +213,7 @@ namespace shared_model {
       static const size_t signature_size;
       static const size_t hash_size;
       static const size_t value_size;
-      static const size_t description_size;
+      const size_t description_size;
     };
 
     boost::optional<ConcreteReasonType> validatePubkey(

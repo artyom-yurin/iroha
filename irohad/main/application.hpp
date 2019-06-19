@@ -243,6 +243,8 @@ class Irohad {
   std::shared_ptr<shared_model::validation::ValidatorsConfig>
       validators_config_;
   std::shared_ptr<shared_model::validation::ValidatorsConfig>
+      setting_validators_config_; //for init storage
+  std::shared_ptr<shared_model::validation::ValidatorsConfig>
       block_validators_config_;
   std::shared_ptr<iroha::validation::StatefulValidator> stateful_validator;
   std::shared_ptr<iroha::validation::ChainValidator> chain_validator;

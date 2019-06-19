@@ -98,7 +98,7 @@ namespace iroha {
               shared_model::validation::FieldValidator>
               factory{
                   std::make_shared<shared_model::validation::ValidatorsConfig>(
-                      kMaxBatchSize)};
+                      kMaxBatchSize, 64)};
 
           auto vote = deserealizeRoundAndHashes(pb_vote);
 
