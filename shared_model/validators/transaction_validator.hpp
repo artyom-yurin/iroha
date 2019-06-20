@@ -299,8 +299,10 @@ namespace shared_model {
           : field_validator_(field_validator) {}
 
      public:
-      explicit TransactionValidator(std::shared_ptr<ValidatorsConfig> config)
-          : TransactionValidator(FieldValidator{config}) {}
+      explicit TransactionValidator(const std::shared_ptr<ValidatorsConfig>& config)
+          : TransactionValidator(FieldValidator{config}) {
+            validators_config_ = config;
+          }
 
       /**
        * Applies validation to given transaction

@@ -51,7 +51,6 @@ namespace shared_model {
         crypto::DefaultCryptoAlgorithmType::kHashLength;
     /// limit for the set account detail size in bytes
     const size_t FieldValidator::value_size = 4 * 1024 * 1024;
-    const size_t FieldValidator::description_size = 64;
 
     const std::regex FieldValidator::account_name_regex_(account_name_pattern_);
     const std::regex FieldValidator::asset_name_regex_(asset_name_pattern_);
@@ -66,7 +65,7 @@ namespace shared_model {
     FieldValidator::FieldValidator(std::shared_ptr<ValidatorsConfig> config,
                                    time_t future_gap,
                                    TimeFunction time_provider)
-        : future_gap_(future_gap), time_provider_(time_provider) {}
+        : future_gap_(future_gap), time_provider_(time_provider), description_size(config->max_description_size){}
 
     void FieldValidator::validateAccountId(
         ReasonsGroupType &reason,
