@@ -12,17 +12,9 @@
 
 namespace shared_model {
   namespace proto {
-    class SetSettingValue final
-        : public CopyableProto<interface::SetSettingValue,
-                               iroha::protocol::Command,
-                               SetSettingValue> {
+    class SetSettingValue final : public interface::SetSettingValue {
      public:
-      template <typename CommandType>
-      explicit SetSettingValue(CommandType &&command);
-
-      SetSettingValue(const SetSettingValue &o);
-
-      SetSettingValue(SetSettingValue &&o) noexcept;
+      explicit SetSettingValue(iroha::protocol::Command &command);
 
       const interface::types::SettingKeyType &key() const override;
 

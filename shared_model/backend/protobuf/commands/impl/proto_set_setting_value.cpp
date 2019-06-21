@@ -8,23 +8,8 @@
 namespace shared_model {
   namespace proto {
 
-    template <typename CommandType>
-    SetSettingValue::SetSettingValue(CommandType &&command)
-        : CopyableProto(std::forward<CommandType>(command)),
-          set_setting_value_{proto_->set_setting_value()} {}
-
-    template SetSettingValue::SetSettingValue(
-        SetSettingValue::TransportType &);
-    template SetSettingValue::SetSettingValue(
-        const SetSettingValue::TransportType &);
-    template SetSettingValue::SetSettingValue(
-        SetSettingValue::TransportType &&);
-
-    SetSettingValue::SetSettingValue(const SetSettingValue &o)
-        : SetSettingValue(o.proto_) {}
-
-    SetSettingValue::SetSettingValue(SetSettingValue &&o) noexcept
-        : SetSettingValue(std::move(o.proto_)) {}
+    SetSettingValue::SetSettingValue(iroha::protocol::Command &command)
+        : set_setting_value_{command.set_setting_value()} {}
 
     const interface::types::SettingKeyType &SetSettingValue::key()
         const {
