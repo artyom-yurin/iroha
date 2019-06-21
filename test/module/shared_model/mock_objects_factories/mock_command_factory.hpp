@@ -182,6 +182,15 @@ namespace shared_model {
           const types::DescriptionType &description,
           const Amount &amount) const;
 
+      /**
+       * Construct a mocked SetSettingValue
+       * @param key to be in that command
+       * @param value to be in that command
+       * @return pointer to the created command
+       */
+      FactoryResult<MockSetSettingValue> constructSetSettingValue(
+          const types::SettingKeyType &key, const types::SettingValueType &value) const;
+
      private:
       /**
        * Actually create a pointer to the mocked command

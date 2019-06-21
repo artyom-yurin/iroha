@@ -26,6 +26,7 @@
 #include "interfaces/commands/set_quorum.hpp"
 #include "interfaces/commands/subtract_asset_quantity.hpp"
 #include "interfaces/commands/transfer_asset.hpp"
+#include "interfaces/commands/set_setting_value.hpp"
 #include "logger/logger.hpp"
 
 using testing::Return;
@@ -142,6 +143,12 @@ namespace shared_model {
       MOCK_CONST_METHOD0(assetId, const types::AssetIdType &());
       MOCK_CONST_METHOD0(amount, const Amount &());
       MOCK_CONST_METHOD0(description, const types::DescriptionType &());
+    };
+
+    struct MockSetSettingValue
+        : public shared_model::interface::SetSettingValue {
+      MOCK_CONST_METHOD0(key, const types::SettingKeyType &());
+      MOCK_CONST_METHOD0(value, const types::SettingValueType &());
     };
   }  // namespace interface
 }  // namespace shared_model

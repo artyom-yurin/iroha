@@ -1534,6 +1534,12 @@ namespace iroha {
       CHECK_ERROR_CODE_AND_MESSAGE(cmd_result, 5, query_args);
     }
 
+    class SetSettingValueTest : public CommandExecutorTest {
+      void SetUp() override {
+        CommandExecutorTest::SetUp();
+      }
+    };
+    
     class SubtractAccountAssetTest : public CommandExecutorTest {
       void SetUp() override {
         CommandExecutorTest::SetUp();
@@ -1541,7 +1547,6 @@ namespace iroha {
         createDefaultDomain();
         createDefaultAccount();
       }
-
      public:
       /**
        * Add default asset and check that it is done
@@ -1994,6 +1999,50 @@ namespace iroha {
                                           uint256_halfmax.toStringRepr(),
                                           "1"};
       CHECK_ERROR_CODE_AND_MESSAGE(cmd_result, 7, query_args);
+    }
+
+    /**
+     * @given command
+     * @when trying to insert the setting value by the key
+     * @then record with the key has the value
+     */
+    TEST_F(SetSettingValueTest, InsertSettingValue) {
+      std::string key = "maxDesc";
+      std::string value = "255";
+      auto cmd_result = execute(
+          *mock_command_factory->constructSetSettingValue(key, value),
+          true);
+
+      auto setting_value = sql_query->getSettingValue(key);
+      ASSERT_TRUE(setting_value);
+      ASSERT_STRCASEEQ(setting_value.get().c_str(), value.c_str());
+    }
+
+    /**
+     * @given command
+     * @when trying to update the setting value by the key
+     * @then record with the key has the new value
+     */
+    TEST_F(SetSettingValueTest, UpdateSettingValue) {
+      std::string key = "maxDesc";
+      std::string value = "255";
+      auto cmd_result = execute(
+          *mock_command_factory->constructSetSettingValue(key, value),
+          true);
+
+      auto setting_value = sql_query->getSettingValue(key);
+      ASSERT_TRUE(setting_value);
+      ASSERT_STRCASEEQ(setting_value.get().c_str(), value.c_str());
+      
+      value = "512";
+      ASSERT_STRCASENE(setting_value.get().c_str(), value.c_str());
+      cmd_result = execute(
+          *mock_command_factory->constructSetSettingValue(key, value),
+          true);
+
+      setting_value = sql_query->getSettingValue(key);
+      ASSERT_TRUE(setting_value);
+      ASSERT_STRCASEEQ(setting_value.get().c_str(), value.c_str());
     }
 
   }  // namespace ametsuchi
