@@ -785,3 +785,45 @@ TEST_F(FieldValidatorTest, QueryContainerFieldsValidation) {
       },
       [] {});
 }
+
+/**
+ * @given field validator with custom config
+ * @when try to give a description with a length of default limit
+ * @then description is valid
+ */
+TEST_F(FieldValidatorTest, TryReachDefaultLimit)
+{
+  validation::FieldValidator custom_field_validator(iroha::test::kTestsValidatorsCustomConfig);
+
+  shared_model::validation::ReasonsGroupType reason;
+  custom_field_validator.validateDescription(reason, std::string(65, 0));
+  ASSERT_TRUE(reason.second.empty());
+}
+
+/**
+ * @given field validator with custom config
+ * @when try to give a description with max length of config
+ * @then description is valid
+ */
+TEST_F(FieldValidatorTest, TryReachNewMaxSize)
+{
+  validation::FieldValidator custom_field_validator(iroha::test::kTestsValidatorsCustomConfig);
+
+  shared_model::validation::ReasonsGroupType reason;
+  custom_field_validator.validateDescription(reason, std::string(128, 0));
+  ASSERT_TRUE(reason.second.empty());
+}
+
+/**
+ * @given field validator with custom config
+ * @when try to give a description with length of config limit
+ * @then description is invalid
+ */
+TEST_F(FieldValidatorTest, TrySetSizeMoreThatNewMax)
+{
+  validation::FieldValidator custom_field_validator(iroha::test::kTestsValidatorsCustomConfig);
+
+  shared_model::validation::ReasonsGroupType reason;
+  custom_field_validator.validateDescription(reason, std::string(129, 0));
+  ASSERT_FALSE(reason.second.empty());
+}

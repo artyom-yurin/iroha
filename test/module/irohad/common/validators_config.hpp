@@ -19,6 +19,11 @@ namespace iroha {
             std::make_shared<shared_model::validation::ValidatorsConfig>(
                 getTestsMaxBatchSize()));
 
+    static const std::shared_ptr<shared_model::validation::ValidatorsConfig>
+        kTestsValidatorsCustomConfig(
+            std::make_shared<shared_model::validation::ValidatorsConfig>(
+                getTestsMaxBatchSize(), 128));
+
   }  // namespace test
 }  // namespace iroha
 
