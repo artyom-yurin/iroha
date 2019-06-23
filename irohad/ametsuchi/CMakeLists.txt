@@ -72,6 +72,7 @@ add_library(ametsuchi
     impl/in_memory_block_storage.cpp
     impl/in_memory_block_storage_factory.cpp
     impl/k_times_reconnection_strategy.cpp
+    impl/settings_impl.cpp
     )
 
 target_link_libraries(ametsuchi

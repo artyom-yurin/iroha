@@ -10,6 +10,7 @@
 #include "ametsuchi/impl/flat_file_block_storage_factory.hpp"
 #include "ametsuchi/impl/k_times_reconnection_strategy.hpp"
 #include "ametsuchi/impl/pool_wrapper.hpp"
+#include "ametsuchi/impl/settings_impl.hpp"
 #include "ametsuchi/impl/storage_impl.hpp"
 #include "ametsuchi/impl/tx_presence_cache_impl.hpp"
 #include "ametsuchi/impl/wsv_restorer_impl.hpp"
@@ -30,7 +31,6 @@
 #include "main/impl/consensus_init.hpp"
 #include "main/impl/pg_connection_init.hpp"
 #include "main/server_runner.hpp"
-#include "main/settings.hpp"
 #include "multi_sig_transactions/gossip_propagation_strategy.hpp"
 #include "multi_sig_transactions/mst_processor_impl.hpp"
 #include "multi_sig_transactions/mst_propagation_strategy_stub.hpp"
@@ -143,9 +143,9 @@ Irohad::RunResult Irohad::init() {
       return {};
     }
   };
-  Settings settings(storage->getSettingQuery());
+  std::shared_ptr<Settings> settings = std::make_shared<SettingsImpl>(storage->getSettingQuery());
   validators_config_ =
-      std::make_shared<shared_model::validation::ValidatorsConfig>(max_proposal_size_, settings.getMaxDescriptionSize());
+      std::make_shared<shared_model::validation::ValidatorsConfig>(max_proposal_size_, settings->getMaxDescriptionSize());
   // clang-format off
   return initWsvRestorer() // Recover WSV from the existing ledger
                            // to be sure it is consistent
