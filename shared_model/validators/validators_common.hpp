@@ -7,18 +7,19 @@
 #define IROHA_VALIDATORS_COMMON_HPP
 
 #include <string>
+#include "ametsuchi/settings.hpp"
 
 namespace shared_model {
   namespace validation {
-
     /**
      * A struct that contains configuration parameters for all validators.
      * A validator may read only specific fields.
      */
     struct ValidatorsConfig {
       ValidatorsConfig(uint64_t max_batch_size,
-                       size_t max_description_size = 64,
+                       std::shared_ptr<iroha::ametsuchi::SettingQuery> setting_query = nullptr,
                        bool partial_ordered_batches_are_valid = false);
+
       /// Maximum allowed amount of transactions within a batch
       const uint64_t max_batch_size;
 
@@ -26,7 +27,11 @@ namespace shared_model {
       /// actually has. Used for block validation
       const bool partial_ordered_batches_are_valid;
 
-      const size_t max_description_size;
+      const std::shared_ptr<iroha::ametsuchi::Settings> settings;
+     private:
+      ValidatorsConfig(uint64_t max_batch_size,
+                       std::shared_ptr<iroha::ametsuchi::Settings> settings,
+                       bool partial_ordered_batches_are_valid = false);
     };
 
     /**

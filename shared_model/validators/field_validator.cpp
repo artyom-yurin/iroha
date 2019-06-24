@@ -65,7 +65,7 @@ namespace shared_model {
     FieldValidator::FieldValidator(std::shared_ptr<ValidatorsConfig> config,
                                    time_t future_gap,
                                    TimeFunction time_provider)
-        : future_gap_(future_gap), time_provider_(time_provider), description_size(config->max_description_size){}
+        : future_gap_(future_gap), time_provider_(time_provider), description_size(config->settings->getMaxDescriptionSize()){}
 
     void FieldValidator::validateAccountId(
         ReasonsGroupType &reason,

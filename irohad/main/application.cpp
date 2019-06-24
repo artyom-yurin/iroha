@@ -118,10 +118,7 @@ Irohad::Irohad(const std::string &block_store_dir,
   log_->info("created");
   setting_validators_config_ =
       std::make_shared<shared_model::validation::ValidatorsConfig>(
-          max_proposal_size_, 64);
-  block_validators_config_ =
-      std::make_shared<shared_model::validation::ValidatorsConfig>(
-          max_proposal_size_, 64, true);
+          max_proposal_size_);
   // Initializing storage at this point in order to insert genesis block before
   // initialization of iroha daemon
   initStorage();
@@ -143,9 +140,11 @@ Irohad::RunResult Irohad::init() {
       return {};
     }
   };
-  std::shared_ptr<Settings> settings = std::make_shared<SettingsImpl>(storage->getSettingQuery());
   validators_config_ =
-      std::make_shared<shared_model::validation::ValidatorsConfig>(max_proposal_size_, settings->getMaxDescriptionSize());
+      std::make_shared<shared_model::validation::ValidatorsConfig>(max_proposal_size_, storage->getSettingQuery());
+  block_validators_config_ =
+      std::make_shared<shared_model::validation::ValidatorsConfig>(
+          max_proposal_size_, storage->getSettingQuery(), true);
   // clang-format off
   return initWsvRestorer() // Recover WSV from the existing ledger
                            // to be sure it is consistent
