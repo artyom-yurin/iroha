@@ -25,11 +25,10 @@ namespace iroha {
 
      private:
       template <typename T>
-      void setValueFromDB(
+      T setValueFromDB(
           const std::shared_ptr<iroha::ametsuchi::SettingQuery> &setting_query,
           const shared_model::interface::types::SettingKeyType &setting_key,
-          T default_value,
-          T &field);
+          T default_value);
 
       size_t max_description_size;
     };

@@ -17,8 +17,7 @@ namespace iroha {
 
     SettingsImpl::SettingsImpl(
         const std::shared_ptr<iroha::ametsuchi::SettingQuery> &setting_query) {
-      setValueFromDB<size_t>(
-          setting_query, "MaxDescriptionSize", 64, max_description_size);
+      max_description_size = setValueFromDB<size_t>(setting_query, "MaxDescriptionSize", 64);
     }
 
     size_t SettingsImpl::getMaxDescriptionSize() const {
@@ -26,37 +25,36 @@ namespace iroha {
     }
 
     template <typename T>
-    void SettingsImpl::setValueFromDB(
+    T SettingsImpl::setValueFromDB(
         const std::shared_ptr<iroha::ametsuchi::SettingQuery> &setting_query,
         const shared_model::interface::types::SettingKeyType &setting_key,
-        T default_value,
-        T &field) {
-      auto desc_size = setting_query->getSettingValue(setting_key);
-      if (desc_size) {
-        std::istringstream ss(desc_size.get());
+        T default_value) {
+      auto value = setting_query->getSettingValue(setting_key);
+      if (value) {
+        std::istringstream ss(value.get());
         T num;
         ss >> num;
-        if (ss.fail()) {
-          field = default_value;
+        if (ss.fail() or ss.tellg() != -1) {
+          return default_value;
         } else {
-          field = num;
+          return num;
         }
       } else {
-        field = default_value;
+        return default_value;
       }
     }
 
     template <>
-    void SettingsImpl::setValueFromDB<shared_model::interface::types::SettingValueType>(
+    shared_model::interface::types::SettingValueType
+    SettingsImpl::setValueFromDB<shared_model::interface::types::SettingValueType>(
         const std::shared_ptr<iroha::ametsuchi::SettingQuery> &setting_query,
         const shared_model::interface::types::SettingKeyType &setting_key,
-        shared_model::interface::types::SettingValueType default_value,
-        shared_model::interface::types::SettingValueType &field) {
-      auto desc_size = setting_query->getSettingValue(setting_key);
-      if (desc_size) {
-        field = desc_size.get();
+        shared_model::interface::types::SettingValueType default_value) {
+      auto value = setting_query->getSettingValue(setting_key);
+      if (value) {
+        return value.get();
       } else {
-        field = default_value;
+        return default_value;
       }
     }
 
